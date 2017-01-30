@@ -1,0 +1,6 @@
+---
+name: Henry
+opts:
+  woah: Hi!
+  nested_opts:
+    you_dont_know_me: true

@@ -1,0 +1,2 @@
+class Template < TemplateResource
+end
