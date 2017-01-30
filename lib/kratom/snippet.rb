@@ -1,4 +1,6 @@
-require 'markdown_resource'
+module Kratom
+  require 'markdown_resource'
 
-class Snippet < MarkdownResource
+  class Snippet < MarkdownResource
+  end
 end

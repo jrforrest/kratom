@@ -1,31 +1,33 @@
-require 'pathname'
+module Kratom
+  require 'pathname'
 
-class Notebook
-  attr_reader :config
+  class Notebook
+    attr_reader :config
 
-  def initialize(config: config)
-    @config = config
-  end
-
-  def process
-    files.each do |pathname|
-      resource(pathmame).write
-      output_pathname(pathname).write(resource(pathname).html)
+    def initialize(config: config)
+      @config = config
     end
-  end
 
-  private
+    def process
+      files.each do |pathname|
+        resource(pathmame).write
+        output_pathname(pathname).write(resource(pathname).html)
+      end
+    end
 
-  def resource(pathname)
-    Note.new(pathname, config: config)
-  end
+    private
 
-  def output_pathname(input_pathname)
-    name = input_pathname.sub_ext('')
-    config.output_dir.join("#{name}.html")
-  end
+    def resource(pathname)
+      Note.new(pathname, config: config)
+    end
 
-  def files
-    Dir[config.join('*.md')].map {|path| Pathname.new(path)}
+    def output_pathname(input_pathname)
+      name = input_pathname.sub_ext('')
+      config.output_dir.join("#{name}.html")
+    end
+
+    def files
+      Dir[config.join('*.md')].map {|path| Pathname.new(path)}
+    end
   end
 end

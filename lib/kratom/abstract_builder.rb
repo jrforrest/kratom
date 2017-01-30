@@ -1,18 +1,20 @@
-require 'site'
+module Kratom
+  require 'site'
 
-# Builds a site using the given configuration
-class AbstractBuilder
-  def initialize(config)
-    @config = config
-  end
+  # Builds a site using the given configuration
+  class AbstractBuilder
+    def initialize(config)
+      @config = config
+    end
 
-  attr_reader :config
+    attr_reader :config
 
-  def site
-    @site ||= Site.new(config)
-  end
+    def site
+      @site ||= Site.new(config)
+    end
 
-  def build
-    raise NotImplementedError
+    def build
+      raise NotImplementedError
+    end
   end
 end

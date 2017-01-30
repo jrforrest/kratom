@@ -1,6 +1,8 @@
-require 'resource_collection'
-require 'snippet'
+module Kratom
+  require 'resource_collection'
+  require 'snippet'
 
-class SnippetsCollection < ResourceCollection
-  resource_class Snippet
+  class SnippetsCollection < ResourceCollection
+    resource_class Snippet
+  end
 end

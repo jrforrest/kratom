@@ -1,2 +1,4 @@
-class Template < TemplateResource
+module Kratom
+  class Template < TemplateResource
+  end
 end

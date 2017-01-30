@@ -1,20 +1,22 @@
-require 'resource'
-require 'kramdown'
+module Kratom
+  require 'resource'
+  require 'kramdown'
 
-class MarkdownResource < Resource
-  SMART_QUOTES = %w{apos apos quot quot}
+  class MarkdownResource < Resource
+    SMART_QUOTES = %w{apos apos quot quot}
 
-  def html
-    @html ||= doc.to_html
-  end
+    def html
+      @html ||= doc.to_html
+    end
 
-  private
+    private
 
-  def doc
-    Kramdown::Document.new(md_text, smart_quotes: SMART_QUOTES)
-  end
+    def doc
+      Kramdown::Document.new(md_text, smart_quotes: SMART_QUOTES)
+    end
 
-  def md_text
-    file_content
+    def md_text
+      file_content
+    end
   end
 end

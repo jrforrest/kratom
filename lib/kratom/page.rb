@@ -1,13 +1,15 @@
-require 'template_resource'
+module Kratom
+  require 'template_resource'
 
-class Page < TemplateResource
-  def html
-    @html ||= layout.render { render }
-  end
+  class Page < TemplateResource
+    def html
+      @html ||= layout.render { render }
+    end
 
-  private
+    private
 
-  def layout
-    site.templates.get(config.layout)
+    def layout
+      site.templates.get(config.layout)
+    end
   end
 end

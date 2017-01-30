@@ -1,51 +1,53 @@
-require 'markdown_resource'
+module Kratom
+  require 'markdown_resource'
 
-class Note < MarkdownResource
-  MetaParseError = Class.new(Error)
+  class Note < MarkdownResource
+    MetaParseError = Class.new(Error)
 
-  def meta
-    @meta ||= (checked_meta_data || Hash.new).to_h
-  end
+    def meta
+      @meta ||= (checked_meta_data || Hash.new).to_h
+    end
 
-  private
+    private
 
-  def checked_meta_data
-    if meta_data.kind_of?(Hash) or meta_data.kind_of?(FalseClass)
-      meta_data
-    else
+    def checked_meta_data
+      if meta_data.kind_of?(Hash) or meta_data.kind_of?(FalseClass)
+        meta_data
+      else
+        raise MetaParseError,
+          "YAML meta data should be a hash. File: #{pathname}"
+      end
+    end
+
+    def meta_data
+      @meta_data ||= YAML.load(meta_text)
+    rescue Psych::SyntaxError => e
       raise MetaParseError,
-        "YAML meta data should be a hash. File: #{pathname}"
+        "Markdown meta parse error in file #{pathname}: #{e.message}"
     end
-  end
 
-  def meta_data
-    @meta_data ||= YAML.load(meta_text)
-  rescue Psych::SyntaxError => e
-    raise MetaParseError,
-      "Markdown meta parse error in file #{pathname}: #{e.message}"
-  end
-
-  def meta_text
-    if sep_index and sep_index > 0
-      lines[0..(sep_index - 1)].join
-    else
-      ''
+    def meta_text
+      if sep_index and sep_index > 0
+        lines[0..(sep_index - 1)].join
+      else
+        ''
+      end
     end
-  end
 
-  def md_text
-    if sep_index
-      lines[(sep_index + 1)..-1].join
-    else
-      lines.join
+    def md_text
+      if sep_index
+        lines[(sep_index + 1)..-1].join
+      else
+        lines.join
+      end
     end
-  end
 
-  def sep_index
-    @sep_index ||= lines.index("---\n")
-  end
+    def sep_index
+      @sep_index ||= lines.index("---\n")
+    end
 
-  def lines
-    @lines ||= file_contents.lines
+    def lines
+      @lines ||= file_contents.lines
+    end
   end
 end
