@@ -12,11 +12,7 @@ module Kratom
     private
 
     def doc
-      Kramdown::Document.new(md_text, smart_quotes: SMART_QUOTES)
-    end
-
-    def md_text
-      file_content
+      Kramdown::Document.new(resource_text, smart_quotes: SMART_QUOTES)
     end
   end
 end

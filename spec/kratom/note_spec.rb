@@ -36,7 +36,7 @@ describe Kratom::Note do
     let(:pathname) { fixture('invalid.md') }
 
     it 'raises a parse error' do
-      expect{subject.meta}.to raise_error(Kratom::Note::MetaParseError)
+      expect{subject.meta}.to raise_error(Kratom::MetaParseError)
     end
   end
 
@@ -44,7 +44,7 @@ describe Kratom::Note do
     let(:pathname) { fixture('meta-syntax-error.md') }
 
     it 'raises a YAML parse error' do
-      expect{subject.meta}.to raise_error(Kratom::Note::MetaParseError)
+      expect{subject.meta}.to raise_error(Kratom::MetaParseError)
     end
   end
 end
