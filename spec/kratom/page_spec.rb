@@ -46,4 +46,13 @@ describe Kratom::Page do
       expect(subject.meta.so).to eql('meta')
     end
   end
+
+  context 'with layout meta' do
+    let(:file) { fixture('meta-layout-page.slim') }
+
+    it 'renders with the appropriate layout' do
+      expect(site_templates).to receive(:get).with('blah')
+      subject.output
+    end
+  end
 end
