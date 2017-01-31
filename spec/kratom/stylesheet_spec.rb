@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'kratom/stylesheet'
+require 'ostruct'
 
 describe Kratom::Stylesheet do
   let(:file) { fixture('valid_stylesheet.sass') }
@@ -7,7 +8,7 @@ describe Kratom::Stylesheet do
   let(:config) do
     double(:config,
       stylesheet_syntax: 'sass',
-      stylesheet_load_path: [fixture_path.to_s])
+      paths: OpenStruct.new(style_modules: 'blah'))
   end
 
   let(:site) { double(:site, config: config) }
@@ -24,14 +25,14 @@ describe Kratom::Stylesheet do
   end
 
   it 'generates css' do
-    expect(stylesheet.css).to eql(generated_css)
+    expect(stylesheet.output).to eql(generated_css)
   end
 
   context 'given an invalid spreadsheet' do
     let(:file) { fixture('invalid_stylesheet.sass') }
 
     it 'gets a little salty' do
-      expect{stylesheet.css}.to raise_error(Kratom::SyntaxError)
+      expect{stylesheet.output}.to raise_error(Kratom::SyntaxError)
     end
   end
 end
