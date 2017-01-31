@@ -1,3 +1,5 @@
+require 'kratom/exceptions'
+
 module Kratom
   class Resource
     Error = Class.new(StandardError)

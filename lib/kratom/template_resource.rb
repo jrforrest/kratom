@@ -4,8 +4,6 @@ module Kratom
   require 'tilt'
 
   class TemplateResource < Resource
-    SyntaxError = Class.new(Error)
-
     def render(&block)
       if block
         template.render(*render_args, block)
@@ -13,7 +11,7 @@ module Kratom
         template.render(*render_args)
       end
     rescue Slim::Parser::SyntaxError => e
-      raise SyntaxError, "#{pathname}: #{e.message}"
+      raise Kratom::SyntaxError, "#{pathname}: #{e.message}"
     end
 
     private

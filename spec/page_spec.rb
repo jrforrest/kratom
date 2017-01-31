@@ -35,7 +35,7 @@ describe Kratom::Page do
     let(:file) { fixture('invalid-page.slim') }
 
     it 'raises a sensible error' do
-      expect{subject.html}.to raise_error(Kratom::TemplateResource::SyntaxError)
+      expect{subject.html}.to raise_error(Kratom::SyntaxError)
     end
   end
 end
