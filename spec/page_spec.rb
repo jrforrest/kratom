@@ -28,14 +28,14 @@ describe Kratom::Page do
   subject { described_class.new(site, file) }
 
   it 'generates html' do
-    expect(subject.html).to match /h1.*HelloWorld/
+    expect(subject.html).to match '<h1>Hello World!</h1>'
   end
 
   context 'with an invalid template file' do
     let(:file) { fixture('invalid-page.slim') }
 
     it 'raises a sensible error' do
-      expect(subject.html).to raise_error(NoMethodError)
+      expect{subject.html}.to raise_error(Kratom::TemplateResource::SyntaxError)
     end
   end
 end
