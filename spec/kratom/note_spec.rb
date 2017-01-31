@@ -17,7 +17,7 @@ describe Kratom::Note do
 
   shared_examples_for 'empty_meta' do
     it '#meta is empty' do
-      expect(subject.meta).to eql({})
+      expect(subject.meta.to_h).to be_empty
     end
   end
 

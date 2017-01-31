@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'kratom/stylesheet'
 
 describe Kratom::Stylesheet do
   let(:file) { fixture('valid_stylesheet.sass') }
