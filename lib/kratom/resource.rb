@@ -1,9 +1,20 @@
 require 'kratom/exceptions'
+require 'tempfile'
+require 'ostruct'
+require 'yaml'
 
 module Kratom
   class Resource
-    Error = Class.new(StandardError)
-    FileError = Class.new(Error)
+    class << self
+      def extension(ext = nil)
+        if ext
+          @extension = ext
+        else
+          @extension || raise(ScriptError,
+            "#{self} must have an extension set!")
+        end
+      end
+    end
 
     def initialize(site, pathname)
       @site, @pathname = site, pathname
@@ -15,10 +26,31 @@ module Kratom
     end
 
     def meta
-      @meta ||= (checked_meta_data || Hash.new).to_h
+      @meta ||= OpenStruct.new((checked_meta_data || Hash.new).to_h)
+    end
+
+    def output
+      raise NotImplementedError, "Each resource must implement output "\
+        "with its own error handling."
     end
 
     private
+
+    def with_tilt
+      with_tempfile {|path| yield Tilt.new(path) }
+    end
+
+    def with_tempfile
+      file = Tempfile.new(['kratom', self.class.extension])
+      file.write(resource_text)
+      file.seek 0
+      yield file.path
+    ensure
+      if file.kind_of?(File)
+        file.close
+        file.unlink
+      end
+    end
 
     def config
       site.config

@@ -3,4 +3,5 @@ module Kratom
   FileError = Class.new(Error)
   SyntaxError = Class.new(Error)
   MetaParseError = Class.new(Error)
+  MissingResourceError = Class.new(Error)
 end

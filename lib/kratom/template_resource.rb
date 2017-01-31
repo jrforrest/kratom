@@ -4,11 +4,13 @@ module Kratom
   require 'tilt'
 
   class TemplateResource < Resource
+    extension '.slim'
+
     def render(&block)
       if block
-        template.render(*render_args, block)
+        with_tilt{|t| t.render(*render_args, block) }
       else
-        template.render(*render_args)
+        with_tilt{|t| t.render(*render_args) }
       end
     rescue Slim::Parser::SyntaxError => e
       raise Kratom::SyntaxError, "#{pathname}: #{e.message}"

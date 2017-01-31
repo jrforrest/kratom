@@ -1,5 +1,4 @@
 require 'pathname'
-require 'kratom/stylesheet'
 
 $LOAD_PATH << Pathname.new(__dir__).join('../lib').to_s
 

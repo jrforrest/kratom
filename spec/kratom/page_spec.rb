@@ -28,14 +28,22 @@ describe Kratom::Page do
   subject { described_class.new(site, file) }
 
   it 'generates html' do
-    expect(subject.html).to match '<h1>Hello World!</h1>'
+    expect(subject.output).to match '<h1>Hello World!</h1>'
   end
 
   context 'with an invalid template file' do
     let(:file) { fixture('invalid-page.slim') }
 
     it 'raises a sensible error' do
-      expect{subject.html}.to raise_error(Kratom::SyntaxError)
+      expect{subject.output}.to raise_error(Kratom::SyntaxError)
+    end
+  end
+
+  context 'with a lil\' meta' do
+    let(:file) { fixture('meta-page.slim') }
+
+    it 'has meta' do
+      expect(subject.meta.so).to eql('meta')
     end
   end
 end
