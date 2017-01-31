@@ -10,9 +10,14 @@ module Kratom
         if ext
           @extension = ext
         else
-          @extension || raise(ScriptError,
-            "#{self} must have an extension set!")
+          expect_set(:extension, @extension)
         end
+      end
+
+      private
+
+      def expect_set(name, val)
+        val || raise(ScriptError, "#{self} must have #{name} set!")
       end
     end
 

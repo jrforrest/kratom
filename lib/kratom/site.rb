@@ -1,41 +1,33 @@
+require 'kratom/resource_collection'
+
+require 'kratom/page'
+require 'kratom/template'
+require 'kratom/stylesheet'
+require 'kratom/markdown_resource'
+require 'kratom/note'
+
 module Kratom
   class Site
-    MissingFile = Class.new(StandardError)
+    class << self
+      def resource_type(name, resource_class)
+        define_method(name) do
+          instance_variable_get("@#{name}") ||
+            instance_variable_set("@#{name}",
+              ResourceCollection.new(name, self, resource_class))
+        end
+      end
+    end
+
+    resource_type :pages, Page
+    resource_type :templates, Template
+    resource_type :stylesheets, Stylesheet
+    resource_type :snippets, MarkdownResource
+    resource_type :notes, Note
 
     def initialize(config)
       @config = config
     end
 
     attr_reader :config
-
-    def pages
-      @pages ||= PageCollection.new(self)
-    end
-
-    def print_pages
-      @print_pages ||= PrintPagesCollection.new(self, config.pages_pattern)
-    end
-
-    def templates
-      @templates ||= TemplateCollection.new(self, config.templates_pattern)
-    end
-
-    def stylesheets
-      @stylesheets ||= StylesheetCollection.new(self, config.sheets_pattern)
-    end
-
-    def snippets
-      @snippets ||= SnippetsCollection.new(self, config.snippets_pattern)
-    end
-
-    def notes
-      @docs ||= Notes.new(config)
-    end
-
-    def generate
-      pages.generate_all
-    rescue Errno::ENOENT => e
-      raise MissingFile, e.message
-    end
   end
 end
