@@ -1,6 +1,5 @@
+require 'kratom/site'
 module Kratom
-  require 'kratom/site'
-
   # Builds a site using the given configuration
   class AbstractBuilder
     def initialize(config)
