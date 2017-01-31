@@ -1,4 +1,5 @@
 require 'pathname'
+require 'kratom/stylesheet'
 
 $LOAD_PATH << Pathname.new(__dir__).join('../lib').to_s
 
@@ -15,7 +16,11 @@ module SpecHelpers
   end
 
   def fixture(name)
-    Pathname.new(__FILE__).dirname.join('fixtures', name)
+    fixture_path.join(name)
+  end
+
+  def fixture_path
+    Pathname.new(__FILE__).dirname.join('fixtures')
   end
 
   def site_double
