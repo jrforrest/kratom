@@ -8,7 +8,7 @@ describe Kratom::Note do
   let(:subject) { described_class.new(site, pathname) }
 
   it 'generates html' do
-    expect(subject.html).not_to be_empty
+    expect(subject.output).not_to be_empty
   end
 
   it 'generates meta' do

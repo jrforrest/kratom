@@ -1,5 +1,7 @@
 module Kratom
   require 'kratom/markdown_resource'
 
-  Note = Class.new(MarkdownResource)
+  class Note < MarkdownResource
+    extension '.md'
+  end
 end
