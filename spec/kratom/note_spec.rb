@@ -1,7 +1,7 @@
-require 'kratom/spec_helper
-require 'kratom/note
+require 'spec_helper'
+require 'kratom/note'
 
-describe Note do
+describe Kratom::Note do
   let(:pathname) { fixture('valid.md') }
   let(:config) { double('config') }
   let(:site) { site_double }
@@ -36,7 +36,7 @@ describe Note do
     let(:pathname) { fixture('invalid.md') }
 
     it 'raises a parse error' do
-      expect{subject.meta}.to raise_error(Snippet::MetaParseError)
+      expect{subject.meta}.to raise_error(Kratom::Note::MetaParseError)
     end
   end
 
@@ -44,7 +44,7 @@ describe Note do
     let(:pathname) { fixture('meta-syntax-error.md') }
 
     it 'raises a YAML parse error' do
-      expect{subject.meta}.to raise_error(Snippet::MetaParseError)
+      expect{subject.meta}.to raise_error(Kratom::Note::MetaParseError)
     end
   end
 end
