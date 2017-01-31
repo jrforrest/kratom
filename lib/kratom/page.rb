@@ -1,5 +1,5 @@
 module Kratom
-  require 'template_resource'
+  require 'kratom/template_resource'
 
   class Page < TemplateResource
     def html

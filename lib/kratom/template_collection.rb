@@ -1,5 +1,5 @@
 module Kratom
-  require 'template'
+  require 'kratom/template'
 
   class TemplateCollection < ResourceCollection
     resource_class Template

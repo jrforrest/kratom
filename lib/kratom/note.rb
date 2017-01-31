@@ -1,5 +1,5 @@
 module Kratom
-  require 'markdown_resource'
+  require 'kratom/markdown_resource'
 
   class Note < MarkdownResource
     MetaParseError = Class.new(Error)

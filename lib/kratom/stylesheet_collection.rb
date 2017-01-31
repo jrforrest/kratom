@@ -1,6 +1,6 @@
 module Kratom
-  require 'generatable_resource_collection'
-  require 'stylesheet'
+  require 'kratom/generatable_resource_collection'
+  require 'kratom/stylesheet'
 
   class StylesheetCollection < ResourceCollection
     resource_class Stylesheet

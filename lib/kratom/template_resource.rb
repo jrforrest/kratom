@@ -1,5 +1,5 @@
 module Kratom
-  require 'resource'
+  require 'kratom/resource'
   require 'slim'
   require 'tilt'
 

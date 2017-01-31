@@ -1,6 +1,6 @@
 module Kratom
-  require 'generatable_resource_collection'
-  require 'page'
+  require 'kratom/generatable_resource_collection'
+  require 'kratom/page'
 
   class PageCollection < GeneratableResourceCollection
     resource_class Page

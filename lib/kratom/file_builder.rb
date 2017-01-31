@@ -1,5 +1,5 @@
 module Kratom
-  require 'abstract_builder'
+  require 'kratom/abstract_builder'
 
   class FileBuilder < AbstractBuilder
     ResourceType = Struct.new(:collection, :ext, :build)

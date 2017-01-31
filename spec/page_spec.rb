@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'page'
+require 'kratom/page'
 
-describe Page do
+describe Kratom::Page do
   let(:layout) do
     double(:layout).tap do |layout|
       allow(layout).to receive(:render).and_yield

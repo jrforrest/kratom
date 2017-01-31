@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'note'
+require 'kratom/spec_helper
+require 'kratom/note
 
 describe Note do
   let(:pathname) { fixture('valid.md') }
