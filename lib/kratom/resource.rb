@@ -28,7 +28,7 @@ module Kratom
     attr_reader :site, :pathname
 
     def name
-      pathname.sub_ext('')
+      pathname.basename.sub_ext('').to_s
     end
 
     def meta

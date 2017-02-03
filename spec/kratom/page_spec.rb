@@ -31,6 +31,12 @@ describe Kratom::Page do
     expect(subject.output).to match '<h1>Hello World!</h1>'
   end
 
+  describe '#name' do
+    it 'returns the name of the page' do
+      expect(subject.name).to eql('valid-page')
+    end
+  end
+
   context 'with an invalid template file' do
     let(:file) { fixture('invalid-page.slim') }
 
