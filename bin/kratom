@@ -16,21 +16,23 @@ def err(msg)
 end
 
 def loaded_config
-  root = Pathname.new(Dir.pwd)
+  @loaded_config ||= begin
+    root = Pathname.new(Dir.pwd)
 
-  ComfyConf::Parser.new(root.join('config.yml')) do
-    prop :site_name, type: String, required: true
-    prop :root, type: String, default: root
-    prop :output_dir, type: String, default: root.join('dist')
+    ComfyConf::Parser.new(root.join('config.yml')) do
+      prop :site_name, type: String, required: true
+      prop :root, type: String, default: root
+      prop :output_dir, type: String, default: root.join('dist')
 
-    config :paths do
-      prop :style_modules, type: String, default: root.join('style_modules')
-      prop :stylesheets, type: String, default: root.join('stylesheets')
-      prop :templates, type: String, default: root.join('templates')
-      prop :pages, type: String, default: root.join('pages')
-      prop :notes, type: String, default: root.join('notes')
-    end
-  end.data
+      config :paths do
+        prop :style_modules, type: String, default: root.join('style_modules')
+        prop :stylesheets, type: String, default: root.join('stylesheets')
+        prop :templates, type: String, default: root.join('templates')
+        prop :pages, type: String, default: root.join('pages')
+        prop :notes, type: String, default: root.join('notes')
+      end
+    end.data
+  end
 rescue ComfyConf::Error, Errno::ENOENT => e
   err(e.message)
   exit 1
@@ -56,8 +58,12 @@ Main do
 
   mode 'watch' do
     def run
+      trap("INT") { exit 0 }
+
       notifier = INotify::Notifier.new
-      ['./pages/', './snippets/', './css/', './layouts/', './images'].each do |path|
+      %i(style_modules stylesheets templates pages notes).each do |path|
+        path = loaded_config.paths.send(path).to_s
+        next unless File.directory?(path)
         notifier.watch(path, :modify) do |ev|
           STDERR.puts 'Regenerating...'
           begin
