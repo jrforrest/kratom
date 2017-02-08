@@ -13,7 +13,7 @@ module Kratom
         define_method(name) do
           instance_variable_get("@#{name}") ||
             instance_variable_set("@#{name}",
-              ResourceCollection.new(name, self, resource_class))
+              ResourceCollection.new(self, name, resource_class))
         end
       end
     end

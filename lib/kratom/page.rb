@@ -19,6 +19,7 @@ module Kratom
     end
 
     def missing_layout_message(layout_name)
+      binding.pry
       "Error rendering #{name}: \n" +
         if layout_name == 'default'
           "No default template is specified!  Create a new template "\

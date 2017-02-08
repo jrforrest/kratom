@@ -17,20 +17,24 @@ module Kratom
           "No resource of type #{resource_class} with name: #{name}")
     end
 
-    def each
-      resources
+    def each(&b)
+      resources.each(&b)
     end
 
     private
 
     def resources
-      @resources ||= Dir[input_pattern].map do |path|
-        resource_class.new(site, Pathname.new(path))
+      @resources ||= input_paths.map do |path|
+        resource_class.new(site, path)
       end
     end
 
+    def input_paths
+      Dir[input_pattern].map {|p| Pathname.new(p)}
+    end
+
     def input_pattern
-      config.root.join(resource_path, '*', resource_class.extension)
+      resource_path.join("*#{resource_class.extension}")
     end
 
     def resource_path

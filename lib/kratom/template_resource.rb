@@ -8,7 +8,7 @@ module Kratom
 
     def render(&block)
       if block
-        with_tilt{|t| t.render(*render_args, block) }
+        with_tilt{|t| t.render(*render_args, &block) }
       else
         with_tilt{|t| t.render(*render_args) }
       end

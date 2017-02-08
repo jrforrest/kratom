@@ -1,5 +1,10 @@
 require 'pathname'
 
+begin
+  require 'pry'
+rescue LoadError
+end
+
 $LOAD_PATH << Pathname.new(__dir__).join('../lib').to_s
 
 module SpecHelpers
