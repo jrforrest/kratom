@@ -1,45 +1,73 @@
 #!/usr/bin/env ruby
 
-@root = Pathname.new(__dir__).join('..')
-
-$LOAD_PATH << @root.join('lib')
-
-require 'file_builder'
-require 'main'
-require 'rb-inotify'
 require 'pathname'
 
-def config
-  @config ||= ComfyConf::Parser.new(@root.join('configuration.yml') do
-    prop :site_name, type: String, required: true
+$LOAD_PATH << Pathname.new(__dir__).join('..', 'lib').to_s
 
-    config :globs, required: true do
-      prop :templates, required: true, type: String
-    end
-  end.data
+require 'kratom/file_builder'
+require 'comfy_conf'
+require 'main'
+require 'rb-inotify'
+require 'pastel'
+require 'pathname'
+
+def err(msg)
+  Pastel.new.tap {|p| STDERR.puts(p.red(msg)) }
 end
 
-builder = FileBuilder.new(config)
-builder.on_error do |error|
-  STDERR.puts(error.message)
+def loaded_config
+  root = Pathname.new(Dir.pwd)
+
+  ComfyConf::Parser.new(root.join('config.yml')) do
+    prop :site_name, type: String, required: true
+    prop :root, type: String, default: root
+    prop :output_dir, type: String, default: root.join('dist')
+
+    config :paths do
+      prop :style_modules, type: String, default: root.join('style_modules')
+      prop :stylesheets, type: String, default: root.join('stylesheets')
+      prop :templates, type: String, default: root.join('templates')
+      prop :pages, type: String, default: root.join('pages')
+      prop :notes, type: String, default: root.join('notes')
+    end
+  end.data
+rescue ComfyConf::Error, Errno::ENOENT => e
+  err(e.message)
   exit 1
 end
 
+def builder
+  @builder ||= Kratom::FileBuilder.new(loaded_config)
+end
+
 Main do
+  def run
+    help!
+  end
+
   mode 'build' do
     def run
       builder.build
+    rescue Kratom::Error => e
+      STDERR.puts(e.message)
+      exit 1
     end
   end
 
   mode 'watch' do
-    notifier = INotify::Notifier.new
-    ['./pages/', './snippets/', './css/', './layouts/', './images'].each do |path|
-      notifier.watch(path, :modify) do |ev|
-        STDERR.puts 'Regenerating...'
-        Generator.new(base_dir: base_dir).generate
+    def run
+      notifier = INotify::Notifier.new
+      ['./pages/', './snippets/', './css/', './layouts/', './images'].each do |path|
+        notifier.watch(path, :modify) do |ev|
+          STDERR.puts 'Regenerating...'
+          begin
+            builder.build
+          rescue Kratom::Error => e
+            err(e.message)
+          end
+        end
       end
+      notifier.run
     end
-    notifier.run
   end
 end

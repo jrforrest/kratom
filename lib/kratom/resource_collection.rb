@@ -38,7 +38,7 @@ module Kratom
     end
 
     def resource_path
-      config.paths[resource_name.to_s]
+      config.paths.send(resource_name.to_s)
     end
 
     def config

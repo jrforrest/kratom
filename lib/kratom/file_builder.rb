@@ -32,7 +32,11 @@ module Kratom
     end
 
     def write_output_file(name, extension, content)
-      config.output_dir.join("#{name}.#{extension}").write(content)
+      output_dir.join("#{name}.#{extension}").write(content)
+    end
+
+    def output_dir
+      Pathname.new(config.output_dir)
     end
   end
 end
