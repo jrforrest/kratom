@@ -1,6 +1,7 @@
 require 'kratom/abstract_builder'
+require 'kratom/exceptions'
 require 'fileutils'
-
+require 'set'
 
 module Kratom
   class FileBuilder < AbstractBuilder
@@ -12,6 +13,10 @@ module Kratom
     end
 
     private
+
+    def written_paths
+      @written_paths ||= Set.new
+    end
 
     def build_directories
       FileUtils.mkdir_p(config.output_dir)
@@ -25,14 +30,25 @@ module Kratom
     end
 
     def build_type(resource_type)
-      resource_type.collection.each do |resource|
-        content = resource.output
-        write_output_file(resource.name, resource_type.ext, content)
+      resource_type.collection.each {|r| write_output_file(r, resource_type) }
+    end
+
+    def write_output_file(resource, resource_type)
+      path = resource_path(resource, resource_type.ext)
+
+      if written_paths.include?(path)
+        raise ResourceConflict,
+          "There's already an output file named #{path.basename}.  "\
+          "The #{resource.class} resource named #{resource.name} will have to "\
+          "be renamed to resolve the conflict."
+      else
+        path.write(resource.output)
+        written_paths << path
       end
     end
 
-    def write_output_file(name, extension, content)
-      output_dir.join("#{name}.#{extension}").write(content)
+    def resource_path(resource, extension)
+      output_dir.join("#{resource.name}.#{extension}")
     end
 
     def output_dir

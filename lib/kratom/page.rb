@@ -5,7 +5,7 @@ module Kratom
     extension '.slim'
 
     def output
-      @output ||= with_tilt { |t| layout.render { t.render } }
+      @output ||= render_with_layout
     rescue Slim::Parser::SyntaxError => e
       raise Kratom::SyntaxError, "#{pathname}: #{e.message}"
     rescue ::NameError => e
@@ -13,6 +13,10 @@ module Kratom
     end
 
     private
+
+    def render_with_layout
+      layout.render { render }
+    end
 
     def layout
       site.templates.get(layout_name)

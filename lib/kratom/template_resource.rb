@@ -23,7 +23,8 @@ module Kratom
     end
 
     def template_vars
-      { snippets: site.snippets,
+      { notes: site.notes,
+        snippets: site.snippets,
         stylesheets: site.stylesheets}
     end
 

@@ -5,7 +5,6 @@ require 'pathname'
 require 'kratom/file_builder'
 
 describe Kratom::FileBuilder do
-  let(:input_dir) { fixture('valid_site') }
   let(:config) do
     OpenStruct.new(
       root: input_dir,
@@ -26,13 +25,25 @@ describe Kratom::FileBuilder do
 
   let(:subject) { described_class.new(config) }
 
-  before { subject.build }
+  context 'when the site is valid' do
+    let(:input_dir) { fixture('valid_site') }
 
-  it 'builds the homepage' do
-    expect(out_dir.join('home.html')).to be_file
+    before { subject.build }
+
+    it 'builds the homepage' do
+      expect(out_dir.join('home.html')).to be_file
+    end
+
+    it 'builds stylesheets' do
+      expect(out_dir.join('style.css')).to be_file
+    end
   end
 
-  it 'builds stylesheets' do
-    expect(out_dir.join('style.css')).to be_file
+  context 'when there\'s a file conflict' do
+    let(:input_dir) { fixture('file_conflict_site') }
+
+    it 'Errors out on the conflict' do
+      expect{subject.build}.to raise_error(Kratom::ResourceConflict)
+    end
   end
 end

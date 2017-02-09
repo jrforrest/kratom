@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'kratom/page'
 
 describe Kratom::Page do
+  let(:notes) { double(:notes) }
+
   let(:layout) do
     double(:layout).tap do |layout|
       allow(layout).to receive(:render).and_yield
@@ -22,9 +24,11 @@ describe Kratom::Page do
     double(:site,
       config: config,
       templates: site_templates,
+      notes: notes,
       snippets: [],
       stylesheets: [])
   end
+
   subject { described_class.new(site, file) }
 
   it 'generates html' do
@@ -50,6 +54,19 @@ describe Kratom::Page do
 
     it 'raises a sensible error' do
       expect{subject.output}.to raise_error(Kratom::NameError)
+    end
+  end
+
+  context 'with notes in the page' do
+    let(:file) { fixture('page-with-notes.slim') }
+
+    let(:notes) do
+      note = double(:note, title: 'Woah a note!')
+      double(:notes, get: note)
+    end
+
+    it 'includes the note' do
+      expect(subject.output).to match(/Woah a note/)
     end
   end
 
