@@ -1,6 +1,7 @@
 module Kratom
   Error = Class.new(StandardError)
   FileError = Class.new(Error)
+  NameError = Class.new(Error)
   SyntaxError = Class.new(Error)
   MetaParseError = Class.new(Error)
   MissingResourceError = Class.new(Error)

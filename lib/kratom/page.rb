@@ -5,9 +5,11 @@ module Kratom
     extension '.slim'
 
     def output
-      @output ||= with_tilt{|t| layout.render { t.render } }
+      @output ||= with_tilt { |t| layout.render { t.render } }
     rescue Slim::Parser::SyntaxError => e
       raise Kratom::SyntaxError, "#{pathname}: #{e.message}"
+    rescue ::NameError => e
+      raise Kratom::NameError, "#{pathname}: #{e.message}"
     end
 
     private
@@ -19,7 +21,6 @@ module Kratom
     end
 
     def missing_layout_message(layout_name)
-      binding.pry
       "Error rendering #{name}: \n" +
         if layout_name == 'default'
           "No default template is specified!  Create a new template "\

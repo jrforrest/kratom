@@ -45,6 +45,14 @@ describe Kratom::Page do
     end
   end
 
+  context 'with invalid variable references in the template' do
+    let(:file) { fixture('missing-vars.slim') }
+
+    it 'raises a sensible error' do
+      expect{subject.output}.to raise_error(Kratom::NameError)
+    end
+  end
+
   context 'with a lil\' meta' do
     let(:file) { fixture('meta-page.slim') }
 
