@@ -1,5 +1,5 @@
 module Kratom
   class Template < TemplateResource
-    extension '.slim'
+    input_extension 'slim'
   end
 end

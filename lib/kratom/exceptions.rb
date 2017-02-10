@@ -6,4 +6,5 @@ module Kratom
   MetaParseError = Class.new(Error)
   MissingResourceError = Class.new(Error)
   ResourceConflict = Class.new(Error)
+  ResourceTypeError = Class.new(Error)
 end

@@ -28,6 +28,10 @@ describe Kratom::Stylesheet do
     expect(stylesheet.output).to eql(generated_css)
   end
 
+  it 'has a path' do
+    expect(stylesheet.path.to_s).to eql('valid_stylesheet.css')
+  end
+
   context 'given an invalid spreadsheet' do
     let(:file) { fixture('invalid_stylesheet.sass') }
 

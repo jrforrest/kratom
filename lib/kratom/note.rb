@@ -2,6 +2,7 @@ module Kratom
   require 'kratom/markdown_resource'
 
   class Note < MarkdownResource
-    extension '.md'
+    input_extension 'md'
+    output_extension 'html'
   end
 end

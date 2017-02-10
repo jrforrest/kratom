@@ -39,7 +39,7 @@ rescue ComfyConf::Error, Errno::ENOENT => e
 end
 
 def builder
-  @builder ||= Kratom::FileBuilder.new(loaded_config)
+  Kratom::FileBuilder.new(loaded_config)
 end
 
 Main do

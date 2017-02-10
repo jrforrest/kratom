@@ -2,16 +2,24 @@ require 'kratom/exceptions'
 require 'tempfile'
 require 'ostruct'
 require 'yaml'
+require 'tilt'
 
 module Kratom
   class Resource
+    Extensions = Struct.new(:input, :output)
+
     class << self
-      def extension(ext = nil)
-        if ext
-          @extension = ext
+      def input_extension(given = nil)
+        if given.nil?
+          expect_set(:input_extension, @input_extension)
         else
-          expect_set(:extension, @extension)
+          @input_extension = given
         end
+      end
+
+      def output_extension(given = nil)
+        @output_extension = given if given
+        @output_extension
       end
 
       private
@@ -40,6 +48,15 @@ module Kratom
         "with its own error handling."
     end
 
+    def path
+      if !self.class.output_extension.nil?
+        Pathname.new "#{name}.#{self.class.output_extension}"
+      else
+        raise ResourceTypeError, "Resource type #{self.class} does not have "\
+          "an output, and thus has no path."
+      end
+    end
+
     private
 
     def with_tilt
@@ -47,7 +64,7 @@ module Kratom
     end
 
     def with_tempfile
-      file = Tempfile.new(['kratom', self.class.extension])
+      file = Tempfile.new(['kratom', ".#{self.class.input_extension}"])
       file.write(resource_text)
       file.seek 0
       yield file.path

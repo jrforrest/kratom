@@ -4,7 +4,7 @@ module Kratom
   require 'tilt'
 
   class TemplateResource < Resource
-    extension '.slim'
+    input_extension 'slim'
 
     def render(&block)
       if block

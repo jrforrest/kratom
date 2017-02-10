@@ -34,7 +34,7 @@ module Kratom
     end
 
     def input_pattern
-      resource_path.join("*#{resource_class.extension}")
+      resource_path.join("*#{resource_class.input_extension}")
     end
 
     def resource_path

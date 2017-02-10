@@ -9,7 +9,7 @@ module Kratom
 
     def build
       build_directories
-      resource_types.each { |type| build_type(type) }
+      Site.resource_types.each {|type| build_type(type) }
     end
 
     private
@@ -22,20 +22,16 @@ module Kratom
       FileUtils.mkdir_p(config.output_dir)
     end
 
-    def resource_types
-      [ [site.pages, 'html'],
-        [site.notes, 'html'],
-        [site.stylesheets, 'css']
-      ].map {|a| ResourceType.new(*a) }
-    end
-
     def build_type(resource_type)
-      resource_type.collection.each {|r| write_output_file(r, resource_type) }
+      if resource_type.buildable?
+        site.resource_collection(resource_type.name).each do |r|
+          write_output_file(r, resource_type)
+        end
+      end
     end
 
     def write_output_file(resource, resource_type)
-      path = resource_path(resource, resource_type.ext)
-
+      path = output_dir.join(resource.path)
       if written_paths.include?(path)
         raise ResourceConflict,
           "There's already an output file named #{path.basename}.  "\

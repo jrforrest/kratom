@@ -3,7 +3,8 @@ require 'sass'
 
 module Kratom
   class Stylesheet < Resource
-    extension '.sass'
+    input_extension 'sass'
+    output_extension 'css'
 
     def output
       @output ||= with_tilt do |tilt|

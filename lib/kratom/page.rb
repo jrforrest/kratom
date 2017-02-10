@@ -2,7 +2,8 @@ module Kratom
   require 'kratom/template_resource'
 
   class Page < TemplateResource
-    extension '.slim'
+    input_extension 'slim'
+    output_extension 'html'
 
     def output
       @output ||= render_with_layout
