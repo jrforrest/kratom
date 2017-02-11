@@ -34,11 +34,11 @@ module Kratom
       end
     end
 
-    resource_type :pages, Page
-    resource_type :templates, Template
     resource_type :stylesheets, Stylesheet
     resource_type :snippets, MarkdownResource
     resource_type :notes, Note
+    resource_type :templates, Template
+    resource_type :pages, Page
 
     def initialize(config)
       @config = config

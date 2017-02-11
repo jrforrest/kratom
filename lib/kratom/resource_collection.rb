@@ -12,7 +12,7 @@ module Kratom
     attr_reader :site, :resource_name, :resource_class
 
     def get(name)
-      find {|p| p.name == name} ||
+      find {|p| p.name == name.to_s} ||
         raise(MissingResourceError,
           "No resource of type #{resource_class} with name: #{name}")
     end
