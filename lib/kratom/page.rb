@@ -37,7 +37,7 @@ module Kratom
     end
 
     def layout_name
-      meta['layout'] || 'default'
+      meta.has_key?(:layout) ? meta[:layout] : 'default'
     end
   end
 end

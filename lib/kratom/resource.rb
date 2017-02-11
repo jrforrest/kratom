@@ -1,4 +1,5 @@
 require 'kratom/exceptions'
+require 'kratom/meta_data'
 require 'tempfile'
 require 'ostruct'
 require 'yaml'
@@ -40,7 +41,7 @@ module Kratom
     end
 
     def meta
-      @meta ||= OpenStruct.new((checked_meta_data || Hash.new).to_h)
+      @meta ||= MetaData.new((checked_meta_data || Hash.new).to_h, self)
     end
 
     def output
@@ -55,6 +56,10 @@ module Kratom
         raise ResourceTypeError, "Resource type #{self.class} does not have "\
           "an output, and thus has no path."
       end
+    end
+
+    def type
+      self.class.to_s
     end
 
     private

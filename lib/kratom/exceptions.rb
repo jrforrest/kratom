@@ -7,4 +7,5 @@ module Kratom
   MissingResourceError = Class.new(Error)
   ResourceConflict = Class.new(Error)
   ResourceTypeError = Class.new(Error)
+  MissingMetaData = Class.new(Error)
 end

@@ -12,12 +12,12 @@ describe Kratom::Note do
   end
 
   it 'generates meta' do
-    expect(subject.meta['name']).to eql('Valid Markdown')
+    expect(subject.meta[:name]).to eql('Valid Markdown')
   end
 
   shared_examples_for 'empty_meta' do
     it '#meta is empty' do
-      expect(subject.meta.to_h).to be_empty
+      expect(subject.meta).to be_empty
     end
   end
 

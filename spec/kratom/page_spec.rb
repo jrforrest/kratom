@@ -74,7 +74,7 @@ describe Kratom::Page do
     let(:file) { fixture('meta-page.slim') }
 
     it 'has meta' do
-      expect(subject.meta.so).to eql('meta')
+      expect(subject.meta[:so]).to eql('meta')
     end
   end
 
