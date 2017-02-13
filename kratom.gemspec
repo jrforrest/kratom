@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "A little static site generator"
   spec.description   = "Kratom is a static site generator for creating "\
                        "professional portfolio sites."
-  spec.homepage      = "github.com/jrforrest/kratom"
+  spec.homepage      = "https://github.com/jrforrest/kratom"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
