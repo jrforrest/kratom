@@ -5,7 +5,13 @@ module Kratom
     SMART_QUOTES = %w{apos apos quot quot}
 
     def output
-      @output ||= with_tilt {|t| t.render }
+      @output ||= render
+    end
+
+    private
+
+    def render
+      with_tilt {|t| t.render}
     end
   end
 end

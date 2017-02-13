@@ -4,7 +4,11 @@ require 'kratom/note'
 describe Kratom::Note do
   let(:pathname) { fixture('valid.md') }
   let(:config) { double('config') }
-  let(:site) { site_double }
+  let(:layout) do
+    double(:layout).tap {|l| allow(l).to receive(:render).and_yield }
+  end
+  let(:templates) { double(:templates, get: layout) }
+  let(:site) { double(:site, templates: templates) }
   let(:subject) { described_class.new(site, pathname) }
 
   it 'generates html' do
